@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Calculator</title>
+    <style>
+        .container {
+         
+            margin: auto;
+            margin-top: 3%;
+            display:grid;
+            grid-template-columns: repeat(3, 1fr);
+            border: 1px solid black;
+            border-radius: 4%;
+            width: 30vw;
+            height: 75vh;
+            align-items: center;
+            padding-top:3%;
+        }
+        .input{
+            margin: 5%;
+            border: 1px solid green;
+            border-radius: 2rem;
+            grid-column-start: 1;
+            grid-column-end: 4;
+            text-align: right;
+        }
+        .btn{
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            border: 1px solid white;
+            margin: auto;
+            background-color: #f7556e;
+            cursor: pointer;
+            color: white;
+            font-size: 2rem;
+            transition: 0.1s;
+        }
+        .btn:active {
+            background: #eb2b47;
+            -webkit-box-shadow: inset 0px 0px 5px #eb2b47;
+            -moz-box-shadow: inset 0px 0px 5px #eb2b47;
+            box-shadow: inset 0px 0px 5px #eb2b47;
+            outline: 0;
+        }
+        .btn:focus{outline: 0;}
+        .clear{
+            grid-column: 3/3
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+            <div class="input">
+                <p class="display" style="margin-right:6%">0</p>
+            </div>
+            <button  class="btn btn-clear">C</button>
+            
+            <button id="9" class="btn btn-num">9</button>
+            <button id="8" class="btn btn-num">8</button>
+            <button id="7" class="btn btn-num">7</button>
+        
+            <button id="6" class="btn btn-num">6</button>
+            <button id="5" class="btn btn-num">5</button>
+            <button id="4" class="btn btn-num">4</button>
+        
+            <button id="3" class="btn btn-num">3</button>
+            <button id="2" class="btn btn-num">2</button>
+            <button id="1" class="btn btn-num">1</button>
+        
+            <button id="0" class="btn btn-num">0</button>
+    
+            <button id='add' class="btn btn-operate">+</button>
+            <button id='subtract' class="btn btn-operate">-</button>
+            <button id='multiply' class="btn btn-operate">*</button>
+            <button id='divide' class="btn btn-operate">/</button>
+    
+            <button id='equal' class="btn">=</button>
+
+    </div>
+
+    <script>
+
+        let input = document.querySelectorAll('.btn-num');
+                let display = document.querySelector('.display');
+
+                let valuesArray = [];
+
+                let displayValue = 0;
+                
+                input.forEach(btn => btn.addEventListener('click', e => {
+                    if(displayValue == 0){
+                        displayValue = btn.id;
+                    }else{
+                    displayValue += btn.id;
+                    }
+                    display.textContent = displayValue;
+                }));
+
+                clearBtn = document.querySelector('.btn-clear');
+                clearBtn.addEventListener('click', e => {
+                    displayValue = 0;
+                    display.textContent = displayValue;
+                    valuesArray.splice(0,valuesArray.length)
+                    });
+        
+
+        const operate = (args) => {
+            let result = args[0];
+            for (let index = 1; index < args.length; index++) {
+                if (operator == '+') {
+                    result+=args[index];
+                }
+                if (operator == '-') {
+                    result-=args[index];
+                }
+                if (operator == '*') {
+                    result*=args[index];
+                }
+                if (operator == '/') {
+                    result/=args[index];
+                }
+            }
+            return result;
+        }
+
+        /*
+        const add = (...arguments) => {
+            return helperFunction(arguments,'+');
+        }
+        const subtract = (...arguments) => {
+           return helperFunction(arguments,'-');
+        }
+        const multiply = (...arguments) => {
+           return helperFunction(arguments,'*');
+        }
+        const divide = (...arguments) => {
+           return helperFunction(arguments,'/');
+        }*/
+
+        /*
+        const operate = (operator,num1,num2) => {
+            const operators = {
+                'add': add(num1,num2),
+                'subtract':subtract(num1,num2),
+                'multiply':multiply(num1,num2),
+                'divide':divide(num1,num2)
+            }
+            return operators[operator];
+        }*/
+
+        const operateButtons = document.querySelectorAll('.btn-operate');
+        operateButtons.forEach(operator =>  operator.addEventListener('click', e => {
+            const operators = {
+                'add': '+',
+                'subtract': '-',
+                'multiply': '*',
+                'divide': '/'
+            }
+            valuesArray.push((displayValue));
+            valuesArray.push(operators[operator.id]);
+            displayValue= 0;
+            display.textContent = displayValue;
+            console.log(valuesArray)
+        }));
+        const workingEval =(fn) => {
+          return new Function('return ' + fn)();
+        }
+        const equalBtn = document.querySelector('#equal');
+        equalBtn.addEventListener('click', () => {
+            valuesArray.push((displayValue))
+            displayValue=workingEval(valuesArray.join(''));
+            display.textContent = displayValue;
+        });
+ 
+    </script>
+</body>
+</html>
