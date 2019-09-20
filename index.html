@@ -106,52 +106,8 @@
                     display.textContent = displayValue;
                     valuesArray.splice(0,valuesArray.length)
                     });
-        
 
-        const operate = (args) => {
-            let result = args[0];
-            for (let index = 1; index < args.length; index++) {
-                if (operator == '+') {
-                    result+=args[index];
-                }
-                if (operator == '-') {
-                    result-=args[index];
-                }
-                if (operator == '*') {
-                    result*=args[index];
-                }
-                if (operator == '/') {
-                    result/=args[index];
-                }
-            }
-            return result;
-        }
-
-        /*
-        const add = (...arguments) => {
-            return helperFunction(arguments,'+');
-        }
-        const subtract = (...arguments) => {
-           return helperFunction(arguments,'-');
-        }
-        const multiply = (...arguments) => {
-           return helperFunction(arguments,'*');
-        }
-        const divide = (...arguments) => {
-           return helperFunction(arguments,'/');
-        }*/
-
-        /*
-        const operate = (operator,num1,num2) => {
-            const operators = {
-                'add': add(num1,num2),
-                'subtract':subtract(num1,num2),
-                'multiply':multiply(num1,num2),
-                'divide':divide(num1,num2)
-            }
-            return operators[operator];
-        }*/
-
+      
         const operateButtons = document.querySelectorAll('.btn-operate');
         operateButtons.forEach(operator =>  operator.addEventListener('click', e => {
             const operators = {
@@ -160,22 +116,30 @@
                 'multiply': '*',
                 'divide': '/'
             }
-            valuesArray.push((displayValue));
+            valuesArray.push((displayValue.toString()));
             valuesArray.push(operators[operator.id]);
             displayValue= 0;
             display.textContent = displayValue;
-            console.log(valuesArray)
         }));
         const workingEval =(fn) => {
           return new Function('return ' + fn)();
         }
         const equalBtn = document.querySelector('#equal');
         equalBtn.addEventListener('click', () => {
-            valuesArray.push((displayValue))
-            displayValue=workingEval(valuesArray.join(''));
-            display.textContent = displayValue;
+            if (parseInt(valuesArray[valuesArray-1]) !== NaN) {
+                valuesArray.push((displayValue));
+                displayValue=workingEval(valuesArray.join(''));
+                if (displayValue == Infinity) {
+                    display.textContent = 'ERROR DIVISON WITH ZERO';
+                    displayValue = 0;
+                    valuesArray.splice(0,valuesArray.length) 
+                }else{
+                display.textContent = displayValue;
+                valuesArray.splice(0,valuesArray.length) 
+                }
+            }
         });
- 
+        
     </script>
 </body>
 </html>
